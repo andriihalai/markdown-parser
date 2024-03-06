@@ -3,7 +3,7 @@
 const fs = require('node:fs/promises');
 const Renderer = require('./lib/Renderer.js');
 
-async function f() {
+async function main() {
   try {
     const mdFilePath = process.argv[2];
     const text = await fs.readFile(mdFilePath, 'utf-8');
@@ -24,4 +24,4 @@ async function f() {
   }
 }
 
-f();
+main();
