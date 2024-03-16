@@ -58,4 +58,49 @@ describe('Lexer', () => {
       counter++;
     }
   });
+
+  describe('.tokanizeBlocks', () => {
+    const cases = [
+      [[], []],
+      [
+        ['Simple block'],
+        ['PARAGRAPH_OPEN', 'Simple', 'block', 'PARAGRAPH_CLOSE', '\n'],
+      ],
+      [
+        ['Some **more** text here', 'Second paragraph', 'Third _paragraph_'],
+        [
+          'PARAGRAPH_OPEN',
+          'Some',
+          'BOLD_OPEN',
+          'more',
+          'BOLD_CLOSE',
+          'text',
+          'here',
+          'PARAGRAPH_CLOSE',
+          '\n',
+          'PARAGRAPH_OPEN',
+          'Second',
+          'paragraph',
+          'PARAGRAPH_CLOSE',
+          '\n',
+          'PARAGRAPH_OPEN',
+          'Third',
+          'ITALIC_OPEN',
+          'paragraph',
+          'ITALIC_CLOSE',
+          'PARAGRAPH_CLOSE',
+          '\n',
+        ],
+      ],
+    ];
+
+    let counter = 1;
+
+    for (const [block, tokens] of cases) {
+      test(`Blocks to tokens convertion test ${1}`, () => {
+        expect(lexer.tokenizeBlocks(block)).toEqual(tokens);
+      });
+      counter++;
+    }
+  });
 });
