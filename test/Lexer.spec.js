@@ -2,6 +2,7 @@
 
 const Lexer = require('./../lib/Lexer');
 const htmlRules = require('./../lib/rules/decryption-rules');
+const ansiRules = require('./../lib/rules/ansi-decryption-rules');
 
 describe('Lexer', () => {
   const lexer = new Lexer();
@@ -177,7 +178,7 @@ describe('Lexer', () => {
     }
   });
 
-  describe('.parse', () => {
+  describe('.parse into html', () => {
     const cases = [
       [
         [
@@ -195,11 +196,67 @@ describe('Lexer', () => {
         ],
         `<p>I'm <b>writing some tests</b></p>`,
       ],
+      [
+        [
+          'ITALIC.OPEN',
+          'my',
+          ' ',
+          'name',
+          'ITALIC.CLOSE',
+          '\n',
+          'PRE.OPEN',
+          '**bold**',
+          'PRE.CLOSE',
+        ],
+        '<i>my name</i>\n\<pre>**bold**</pre>',
+      ],
     ];
     let counter = 1;
     for (const [tokens, output] of cases) {
-      test(`Parsing tokens test ${counter}`, () => {
+      test(`Parsing tokens into html test ${counter}`, () => {
         expect(lexer.parse(tokens, htmlRules)).toEqual(output);
+      });
+    }
+  });
+
+  describe('.parse into ansi', () => {
+    const cases = [
+      [
+        [
+          'PARAGRAPH.OPEN',
+          `I'm`,
+          ' ',
+          'BOLD.OPEN',
+          'writing',
+          ' ',
+          'some',
+          ' ',
+          'tests',
+          'BOLD.CLOSE',
+          'PARAGRAPH.CLOSE',
+        ],
+        `I'm \x1b[1mwriting some tests\x1b[22m`,
+      ],
+      [
+        [
+          'ITALIC.OPEN',
+          'my',
+          ' ',
+          'name',
+          'ITALIC.CLOSE',
+          '\n',
+          'PRE.OPEN',
+          '**bold**',
+          'PRE.CLOSE',
+        ],
+        '\x1b[3mmy name\x1b[23m\n\x1b[7m**bold**\x1b[27m',
+      ],
+    ];
+
+    let counter = 1;
+    for (const [tokens, output] of cases) {
+      test(`Parsing tokens into ansi test ${counter}`, () => {
+        expect(lexer.parse(tokens, ansiRules)).toEqual(output);
       });
     }
   });
