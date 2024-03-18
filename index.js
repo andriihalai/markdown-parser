@@ -1,24 +1,28 @@
 'use strict';
 
 const fs = require('node:fs/promises');
+const { program } = require('commander');
 const Renderer = require('./lib/Renderer.js');
 
 async function main() {
   try {
+    program
+      .option('--out [outFilepath]', 'Specify output filepath')
+      .option('--format <value>', 'Specify the format')
+      .parse(process.argv);
+
+    const { format, out: outFilepath } = program.opts();
+
     const mdFilePath = process.argv[2];
     const text = await fs.readFile(mdFilePath, 'utf-8');
 
     const renderer = new Renderer();
-    const output = renderer.render(text);
+    const output = renderer.render(text, format);
 
-    if (process.argv.includes('--out')) {
-      const outputFilepathIndex = process.argv.indexOf('--out') + 1;
-      const outputFilepath = process.argv[outputFilepathIndex];
-
-      await fs.writeFile(outputFilepath, output);
-    } else {
+    if (!outFilepath) {
       console.log(output);
     }
+    await fs.writeFile(outFilepath, output);
   } catch (error) {
     console.error('Error:', error.message);
   }

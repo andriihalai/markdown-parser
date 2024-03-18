@@ -1,6 +1,7 @@
 'use strict';
 
 const Lexer = require('./../lib/Lexer');
+const htmlRules = require('./../lib/rules/decryption-rules');
 
 describe('Lexer', () => {
   const lexer = new Lexer();
@@ -198,7 +199,7 @@ describe('Lexer', () => {
     let counter = 1;
     for (const [tokens, output] of cases) {
       test(`Parsing tokens test ${counter}`, () => {
-        expect(lexer.parse(tokens)).toEqual(output);
+        expect(lexer.parse(tokens, htmlRules)).toEqual(output);
       });
     }
   });
