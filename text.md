@@ -1,5 +1,5 @@
 I'm **tired** of being what you want me to be
-Feeling so _faithless_, lost **under the surface**
+Feeling so _faithless_ lost **under the surface**
 Don't know what you're expecting of me
 Put under `the pressure` of walking in **your** shoes
 Every step that _I_take_ is `another` mistake to you
