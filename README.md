@@ -34,30 +34,23 @@ npm install
 node index.js /path/to/markdown/file
 ```
 
+### Write output to a file:
+
 - You can specify the output file by using the **--out** option:
 
 ```bash
 node index.js /path/to/markdown/file --out path/to/output/file
 ```
 
-- To parse markdown (default format is **ansi** if the file is not specified)
-  and get the output to the console run:
+### Choose a format:
 
-```bash
-node index.js /path/to/markdown/file
-```
-
-- To parse markdown (default format is **html** if the format not specified) and save the output to the file run:
-
-```bash
-node index.js /path/to/markdown/file --out /path/to/output/file
-```
-
-- You can choose the format using **--format=value** option with **html** or **ansi** value:
+- Use **--format=html** for html:
 
 ```bash
 node index.js /path/to/markdown/file --format=html
 ```
+
+- Use **--format=ansi** for ansi:
 
 ```bash
 node index.js /path/to/markdown/file --format=ansi --out path/to/output/file
@@ -79,7 +72,7 @@ npm run test:dev
 
 ## Посилання на коміт на якому тести впали
 
-[Failure build]()
+[Failure build](https://github.com/andriihalai/markdown-parser/actions/runs/8332816898)
 
 ## Revert commit
 
