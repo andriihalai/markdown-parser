@@ -58,4 +58,148 @@ describe('Lexer', () => {
       counter++;
     }
   });
+
+  describe('.tokanizeBlocks', () => {
+    const cases = [
+      [[], []],
+      [
+        ['Simple block'],
+        ['PARAGRAPH.OPEN', 'Simple', ' ', 'block', 'PARAGRAPH.CLOSE', '\n'],
+      ],
+      [
+        ['**Bold** text'],
+        [
+          'PARAGRAPH.OPEN',
+          'BOLD.OPENBoldBOLD.CLOSE',
+          ' ',
+          'text',
+          'PARAGRAPH.CLOSE',
+          '\n',
+        ],
+      ],
+      [
+        [
+          'Some **more** **text** here',
+          'Second paragraph',
+          'Third _paragraph_',
+        ],
+        [
+          'PARAGRAPH.OPEN',
+          'Some',
+          ' ',
+          'BOLD.OPENmoreBOLD.CLOSE',
+          ' ',
+          'BOLD.OPENtextBOLD.CLOSE',
+          ' ',
+          'here',
+          'PARAGRAPH.CLOSE',
+          '\n',
+          'PARAGRAPH.OPEN',
+          'Second',
+          ' ',
+          'paragraph',
+          'PARAGRAPH.CLOSE',
+          '\n',
+          'PARAGRAPH.OPEN',
+          'Third',
+          ' ',
+          'ITALIC.OPENparagraphITALIC.CLOSE',
+          'PARAGRAPH.CLOSE',
+          '\n',
+        ],
+      ],
+    ];
+
+    let counter = 1;
+
+    for (const [block, tokens] of cases) {
+      test(`Blocks to tokens convertion test ${counter}`, () => {
+        expect(lexer.tokenizeBlocks(block)).toEqual(tokens);
+      });
+      counter++;
+    }
+  });
+
+  describe('.tokenize', () => {
+    const cases = [
+      [[], []],
+      [
+        [
+          'PARAGRAPH.OPEN',
+          'Some BOLD.OPENmoreBOLD.CLOSE  text here',
+          'PARAGRAPH.CLOSE',
+        ],
+        [
+          'PARAGRAPH.OPEN',
+          'Some',
+          ' ',
+          'BOLD.OPENmoreBOLD.CLOSE',
+          '  ',
+          'text',
+          ' ',
+          'here',
+          'PARAGRAPH.CLOSE',
+          '\n',
+        ],
+      ],
+      [
+        ['MONO.OPENmy.fancy stringMONO.CLOSE'],
+        ['MONO.OPENmy.fancy', ' ', 'stringMONO.CLOSE', '\n'],
+      ],
+      [
+        ['BOLD.OPENLondon ITALIC.OPENis theITALIC.CLOSE capital of GB. '],
+        [
+          'BOLD.OPENLondon',
+          ' ',
+          'ITALIC.OPENis',
+          ' ',
+          'theITALIC.CLOSE',
+          ' ',
+          'capital',
+          ' ',
+          'of',
+          ' ',
+          'GB.',
+          ' ',
+          '\n',
+        ],
+      ],
+    ];
+
+    let counter = 1;
+
+    for (const [lines, tokens] of cases) {
+      test(`Tokenization test ${counter}`, () => {
+        expect(lexer.tokenize(lines)).toEqual(tokens);
+      });
+      counter++;
+    }
+  });
+
+  describe('.parse', () => {
+    const cases = [
+      [
+        [
+          'PARAGRAPH.OPEN',
+          `I'm`,
+          ' ',
+          'BOLD.OPEN',
+          'writing',
+          ' ',
+          'some',
+          ' ',
+          'tests',
+          'BOLD.CLOSE',
+          'PARAGRAPH.CLOSE',
+        ],
+        `<p>I'm <b>writing some tests</b></p>`,
+      ],
+    ];
+    let counter = 1;
+    for (const [tokens, output] of cases) {
+      test(`Parsing tokens test ${counter}`, () => {
+        expect(lexer.parse(tokens)).toEqual(output);
+      });
+    }
+  });
 });
