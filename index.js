@@ -11,17 +11,22 @@ async function main() {
       .option('--format <value>', 'Specify the format')
       .parse(process.argv);
 
-    const { format, out: outFilepath } = program.opts();
+    let { format, out: outFilepath } = program.opts();
 
     const mdFilePath = process.argv[2];
     const text = await fs.readFile(mdFilePath, 'utf-8');
 
     const renderer = new Renderer();
-    const output = renderer.render(text, format);
-
+    
     if (outFilepath) {
+      const output = renderer.render(text, format);
       await fs.writeFile(outFilepath, output);
+    } else if (format) {
+      const output = renderer.render(text, format);
+      console.log(output);
     } else {
+      format = 'ansi';
+      const output = renderer.render(text, format);
       console.log(output);
     }
   } catch (error) {
