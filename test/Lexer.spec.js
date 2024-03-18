@@ -208,7 +208,7 @@ describe('Lexer', () => {
           '**bold**',
           'PRE.CLOSE',
         ],
-        '<i>my name</i>\n\<pre>**bold**</pre>',
+        '<i>my name</i>\n<pre>**bold**</pre>',
       ],
     ];
     let counter = 1;
