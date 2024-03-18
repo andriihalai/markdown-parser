@@ -19,10 +19,11 @@ async function main() {
     const renderer = new Renderer();
     const output = renderer.render(text, format);
 
-    if (!outFilepath) {
+    if (outFilepath) {
+      await fs.writeFile(outFilepath, output);
+    } else {
       console.log(output);
     }
-    await fs.writeFile(outFilepath, output);
   } catch (error) {
     console.error('Error:', error.message);
   }
