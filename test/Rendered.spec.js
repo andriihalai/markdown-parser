@@ -49,6 +49,6 @@ test('Parsing markdown into ansi', () => {
   );
 
   expect(renderer.render('**bold** text\n_italic text_', 'ansi')).toEqual(
-    '\x1b[1mbold\x1b[22m text\n\x1b[3mitalic text\x1b[23m'
+    '\x1b[1mbold\x1b[22m text\n\x1b[3mitalic text\x1b[23m\n'
   );
 });

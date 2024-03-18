@@ -249,7 +249,7 @@ describe('Lexer', () => {
           '**bold**',
           'PRE.CLOSE',
         ],
-        '\x1b[3mmy name\x1b[23m\n\x1b[7m**bold**\x1b[27',
+        '\x1b[3mmy name\x1b[23m\n\x1b[7m**bold**\x1b[27m',
       ],
     ];
 
